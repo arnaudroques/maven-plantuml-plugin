@@ -1,0 +1,1 @@
+A maven plugin to generate UML diagrams using PlantUML syntax.
