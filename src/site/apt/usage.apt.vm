@@ -16,3 +16,28 @@
  * the License.
  *#
 
+Usage
+
+  In order to generate images from PlantUML description add the plantuml plugin to your build:
+
+---
+<project>
+    ...
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${project.artifactId}</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        ...
+    </dependencies>
+    ...
+</project>
+---
+
+  Then execute command:
+  
+---
+mvn clean com.github.jeluard:maven-plantuml-plugin:generate
+---

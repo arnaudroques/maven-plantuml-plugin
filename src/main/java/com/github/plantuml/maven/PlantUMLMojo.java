@@ -39,54 +39,44 @@ public class PlantUMLMojo extends AbstractMojo {
     private final Option option = new Option();
 
     /**
-     * @parameter
+     * @parameter expression="${plantuml.directory}" default-value="${basedir}/src/main/resources/plantuml"
      * @required
-     * @default="${project.build.directory}/plantuml"
-     * @expression="${plantuml.directory}"
      */
     private File directory;
 
     /**
-     * @parameter
+     * @parameter expression="${plantuml.outputDirectory}" default-value="${project.build.outputDirectory}"
      * @required
-     * @default="${project.build.directory}/plantuml"
-     * @expression="${plantuml.outputDirectory}"
      */
     private File outputDirectory;
 
     /**
-     * @parameter
-     * @expression="${plantuml.charset}"
+     * @parameter expression="${plantuml.charset}"
      */
     private String charset;
 
     /**
-     * @parameter
-     * @expression="${plantuml.config}"
+     * @parameter expression="${plantuml.config}"
      */
     private String config;
 
     /**
-     * @parameter default=false
-     * @expression="${plantuml.keepTmpFiles}"
+     * @parameter expression="${plantuml.keepTmpFiles}" default-value="false"
      */
     private boolean keepTmpFiles;
 
     /**
-     * @parameter
-     * @expression="${plantuml.format}"
+     * @parameter expression="${plantuml.format}"
      */
     private String format;
 
     /**
-     * @parameter
-     * @expression="${plantuml.graphvizDot}"
+     * @parameter expression="${plantuml.graphvizDot}"
      */
     private String graphvizDot;
 
     /**
-     * @parameter default=false
-     * @expression="${plantuml.verbose}"
+     * @parameter expression="${plantuml.verbose}" default-value="false"
      */
     private boolean verbose;
 
@@ -112,6 +102,17 @@ public class PlantUMLMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+        if (!this.directory.isDirectory()) {
+            throw new IllegalArgumentException("<"+this.directory+"> is not a valid directory.");
+        }
+        if (!this.outputDirectory.exists()) {
+            //If output directoy does not exist yet create it.
+            this.outputDirectory.mkdirs();
+        }
+        if (!this.outputDirectory.isDirectory()) {
+            throw new IllegalArgumentException("<"+this.outputDirectory+"> is not a valid directory.");
+        }
+
         try {
             this.option.setOutputDir(this.outputDirectory);
             if (this.charset != null) {
@@ -132,6 +133,8 @@ public class PlantUMLMojo extends AbstractMojo {
             if (this.verbose) {
                 OptionFlags.getInstance().setVerbose(true);
             }
+
+            getLog().info("Using <"+this.directory+"> as directory and <"+this.outputDirectory+"> as output directory.");
 
             final DirWatcher dirWatcher = new DirWatcher(this.directory, this.option, Option.getPattern());
             final Collection<GeneratedImage> result = dirWatcher.buildCreatedFiles();
