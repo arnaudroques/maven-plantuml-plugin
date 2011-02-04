@@ -39,13 +39,13 @@ public class PlantUMLMojo extends AbstractMojo {
     private final Option option = new Option();
 
     /**
-     * @parameter expression="${plantuml.directory}" default-value="${basedir}/src/main/resources/plantuml"
+     * @parameter expression="${plantuml.directory}" default-value="${basedir}/src/main/plantuml"
      * @required
      */
     private File directory;
 
     /**
-     * @parameter expression="${plantuml.outputDirectory}" default-value="${project.build.outputDirectory}"
+     * @parameter expression="${plantuml.outputDirectory}" default-value="${basedir}/target/docbook/plantuml"
      * @required
      */
     private File outputDirectory;
