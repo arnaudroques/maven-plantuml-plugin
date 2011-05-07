@@ -45,7 +45,7 @@ public class PlantUMLMojo extends AbstractMojo {
     private File directory;
 
     /**
-     * @parameter expression="${plantuml.outputDirectory}" default-value="${basedir}/target/docbook/plantuml"
+     * @parameter expression="${plantuml.outputDirectory}" default-value="${basedir}/target/plantuml"
      * @required
      */
     private File outputDirectory;
@@ -103,7 +103,8 @@ public class PlantUMLMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
         if (!this.directory.isDirectory()) {
-            throw new IllegalArgumentException("<"+this.directory+"> is not a valid directory.");
+            getLog().warn("<"+this.directory+"> is not a valid directory.");
+            return;
         }
         if (!this.outputDirectory.exists()) {
             //If output directoy does not exist yet create it.
