@@ -51,31 +51,37 @@ public class PlantUMLMojo extends AbstractMojo {
     private File outputDirectory;
 
     /**
+     * Charset used during generation.
      * @parameter expression="${plantuml.charset}"
      */
     private String charset;
 
     /**
+     * External configuration file location.
      * @parameter expression="${plantuml.config}"
      */
     private String config;
 
     /**
+     * Wether or not to keep tmp files after generation.
      * @parameter expression="${plantuml.keepTmpFiles}" default-value="false"
      */
     private boolean keepTmpFiles;
 
     /**
+     * Specify output format. Supported values: xmi, xmi:argo, xmi:start, eps, pdf, eps:txt, svg, txt and utxt.
      * @parameter expression="${plantuml.format}"
      */
     private String format;
 
     /**
+     * Fully qualified path to Graphviz home directory.
      * @parameter expression="${plantuml.graphvizDot}"
      */
     private String graphvizDot;
 
     /**
+     * Wether or not to output details during generation.
      * @parameter expression="${plantuml.verbose}" default-value="false"
      */
     private boolean verbose;
