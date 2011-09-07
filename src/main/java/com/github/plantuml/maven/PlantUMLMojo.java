@@ -69,7 +69,7 @@ public class PlantUMLMojo extends AbstractMojo {
     private boolean keepTmpFiles;
 
     /**
-     * Specify output format. Supported values: xmi, xmi:argo, xmi:start, eps, pdf, eps:txt, svg, txt and utxt.
+     * Specify output format. Supported values: xmi, xmi:argo, xmi:start, eps,  pdf, eps:txt, svg, png, dot, txt and utxt.
      * @parameter expression="${plantuml.format}"
      */
     private String format;
@@ -95,12 +95,20 @@ public class PlantUMLMojo extends AbstractMojo {
             this.option.setFileFormat(FileFormat.XMI_STAR);
         } else if ("eps".equalsIgnoreCase(format)) {
             this.option.setFileFormat(FileFormat.EPS);
+        } else if ("eps:txt".equalsIgnoreCase(format)) {
+            this.option.setFileFormat(FileFormat.EPS_TEXT);
         } else if ("svg".equalsIgnoreCase(format)) {
             this.option.setFileFormat(FileFormat.SVG);
         } else if ("txt".equalsIgnoreCase(format)) {
             this.option.setFileFormat(FileFormat.ATXT);
         } else if ("utxt".equalsIgnoreCase(format)) {
             this.option.setFileFormat(FileFormat.UTXT);
+        } else if ("dot".equalsIgnoreCase(format)) {
+            this.option.setFileFormat(FileFormat.DOT);
+        } else if ("png".equalsIgnoreCase(format)) {
+            this.option.setFileFormat(FileFormat.PNG);
+        } else if ("pdf".equalsIgnoreCase(format)) {
+            this.option.setFileFormat(FileFormat.PDF);
         } else {
             throw new IllegalArgumentException("Unrecognized format <"+format+">");
         }
