@@ -41,3 +41,5 @@ Usage
 ---
 mvn clean com.github.jeluard:maven-plantuml-plugin:generate
 ---
+
+Find more details about the generate goal {{{./generate-mojo.html}here}}.
