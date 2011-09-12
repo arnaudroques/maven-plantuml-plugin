@@ -21,15 +21,22 @@ package com.github.plantuml.maven;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import net.sourceforge.plantuml.DirWatcher;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.GeneratedImage;
 import net.sourceforge.plantuml.Option;
 import net.sourceforge.plantuml.OptionFlags;
+import net.sourceforge.plantuml.SourceFileReader;
+import net.sourceforge.plantuml.preproc.Defines;
+
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.model.FileSet;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @goal generate
@@ -41,8 +48,14 @@ public class PlantUMLMojo extends AbstractMojo {
     /**
      * @parameter expression="${plantuml.directory}" default-value="${basedir}/src/main/plantuml"
      * @required
+     * @deprecated Use sourceFiles parameter instead, which provides better capabilities of filtering.
      */
     private File directory;
+
+    /**
+     * @parameter expression="${plantuml.sourceFiles}"
+     */
+    private FileSet sourceFiles;
 
     /**
      * @parameter expression="${plantuml.outputDirectory}" default-value="${basedir}/target/plantuml"
@@ -149,16 +162,57 @@ public class PlantUMLMojo extends AbstractMojo {
                 OptionFlags.getInstance().setVerbose(true);
             }
 
-            getLog().info("Using <"+this.directory+"> as directory and <"+this.outputDirectory+"> as output directory.");
+            File baseDir = null;
+            try {
+                baseDir  = new File(sourceFiles.getDirectory());
+            }
+            catch(Exception e) {
+               getLog().warn(sourceFiles.getDirectory() + " is not a valid path");
+            }
+            if(baseDir != null) {
+                List<File> files = FileUtils.getFiles(
+                     baseDir,
+                     getCommaSeparatedList(this.sourceFiles.getIncludes()),
+                     getCommaSeparatedList(this.sourceFiles.getExcludes())
+                );
+                for(File f : files) {
+                    getLog().info("Processing " + f);
+                    final SourceFileReader sourceFileReader =
+                        new SourceFileReader(
+                            new Defines(), f, option.getOutputDir(),
+                            option.getConfig(), option.getCharset(),
+                            option.getFileFormatOption());
+                    for (final GeneratedImage image :
+                             sourceFileReader.getGeneratedImages()) {
+                        getLog().debug(image + " " + image.getDescription());
+                    }
+                }
+            }
+            else {
+                getLog().info("Using <"+this.directory+"> as directory and <"+this.outputDirectory+"> as output directory.");
 
-            final DirWatcher dirWatcher = new DirWatcher(this.directory, this.option, Option.getPattern());
-            final Collection<GeneratedImage> result = dirWatcher.buildCreatedFiles();
-            for (final GeneratedImage image : result) {
-                getLog().debug(image + " " + image.getDescription());
+                final DirWatcher dirWatcher = new DirWatcher(this.directory, this.option, Option.getPattern());
+                final Collection<GeneratedImage> result = dirWatcher.buildCreatedFiles();
+                for (final GeneratedImage image : result) {
+                    getLog().debug(image + " " + image.getDescription());
+                }
             }
         } catch (Exception e) {
             throw new MojoExecutionException("Exception during plantuml process", e);
         }
+    }
+
+    protected String getCommaSeparatedList(List list) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator it = list.iterator();
+        while(it.hasNext()) {
+            Object object = it.next();
+            buffer.append(object.toString());
+            if (it.hasNext()) {
+                buffer.append(",");
+            }
+        }
+        return buffer.toString();
     }
 
 }
