@@ -36,10 +36,44 @@ Usage
 </project>
 ---
 
+Configure the plugin
+
+  Specify files to be processed and output directory:
+
+---
+<project>
+    ...
+    <plugins>
+        ...
+        <plugin>
+            ...
+            <configuration>
+                <sourceFiles>
+                    <directory>${basedir}</directory>
+                    <includes>
+                        <include>
+                            src/main/java/**/*.java
+                        </include>
+                    </includes>
+                </sourceFiles>
+                <outputDirectory>
+                    ${basedir}/target/documentation/img
+                </outputDirectory>
+            </configuration>
+            ...
+        </plugin>
+        ...
+    </plugins>
+    ...
+</project>
+---
+
+Run goal
+
   Then execute command:
   
 ---
 mvn clean com.github.jeluard:maven-plantuml-plugin:generate
 ---
 
-Find more details about the generate goal {{{./generate-mojo.html}here}}.
+  Find more details about the generate goal {{{./generate-mojo.html}here}}.
