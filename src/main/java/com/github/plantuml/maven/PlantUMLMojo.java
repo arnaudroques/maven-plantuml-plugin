@@ -18,7 +18,6 @@
 
 package com.github.plantuml.maven;
 
-
 import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
@@ -46,8 +45,7 @@ public class PlantUMLMojo extends AbstractMojo {
     private final Option option = new Option();
 
     /**
-     * @parameter expression="${plantuml.directory}" default-value="${basedir}/src/main/plantuml"
-     * @required
+     * @parameter expression="${plantuml.directory}"
      * @deprecated Use sourceFiles parameter instead, which provides better capabilities of filtering.
      */
     private File directory;
@@ -129,7 +127,7 @@ public class PlantUMLMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        if (!this.directory.isDirectory()) {
+        if (this.directory != null && !this.directory.isDirectory()) {
             getLog().warn("<"+this.directory+"> is not a valid directory.");
             return;
         }
@@ -164,24 +162,24 @@ public class PlantUMLMojo extends AbstractMojo {
 
             File baseDir = null;
             try {
-                baseDir  = new File(sourceFiles.getDirectory());
+                baseDir  = new File(this.sourceFiles.getDirectory());
             }
             catch(Exception e) {
-               getLog().warn(sourceFiles.getDirectory() + " is not a valid path");
+               getLog().warn(this.sourceFiles.getDirectory() + " is not a valid path");
             }
             if(baseDir != null) {
-                List<File> files = FileUtils.getFiles(
+                final List<File> files = FileUtils.getFiles(
                      baseDir,
                      getCommaSeparatedList(this.sourceFiles.getIncludes()),
                      getCommaSeparatedList(this.sourceFiles.getExcludes())
                 );
-                for(File f : files) {
+                for(final File f : files) {
                     getLog().info("Processing " + f);
                     final SourceFileReader sourceFileReader =
                         new SourceFileReader(
-                            new Defines(), f, option.getOutputDir(),
-                            option.getConfig(), option.getCharset(),
-                            option.getFileFormatOption());
+                            new Defines(), f, this.option.getOutputDir(),
+                            this.option.getConfig(), this.option.getCharset(),
+                            this.option.getFileFormatOption());
                     for (final GeneratedImage image :
                              sourceFileReader.getGeneratedImages()) {
                         getLog().debug(image + " " + image.getDescription());
@@ -202,9 +200,9 @@ public class PlantUMLMojo extends AbstractMojo {
         }
     }
 
-    protected String getCommaSeparatedList(List list) {
-        StringBuffer buffer = new StringBuffer();
-        Iterator it = list.iterator();
+    protected String getCommaSeparatedList(final List list) {
+        final StringBuffer buffer = new StringBuffer();
+        final Iterator it = list.iterator();
         while(it.hasNext()) {
             Object object = it.next();
             buffer.append(object.toString());
