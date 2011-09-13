@@ -4,7 +4,7 @@
 
     <groupId>com.github.jeluard</groupId>
     <artifactId>maven-plantuml-plugin</artifactId>
-    <version>7178-SNAPSHOT</version>
+    <version>7232-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Maven PlantUML plugin</name>
@@ -18,14 +18,14 @@
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
-        <version>5</version>
+        <version>7</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
-            <version>7177</version>
+            <version>7232</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -51,6 +51,10 @@
         <developer>
             <id>jeluard</id>
             <name>Julien Eluard</name>
+        </developer>
+        <developer>
+            <id>vanuan</id>
+            <name>John Yani</name>
         </developer>
     </developers>
 
