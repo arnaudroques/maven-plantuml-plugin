@@ -51,11 +51,15 @@ public class PlantUMLMojo extends AbstractMojo {
     private File directory;
 
     /**
+     * Fileset to search plantuml diagrams in.
      * @parameter expression="${plantuml.sourceFiles}"
+     * @required
+     * @since 7232
      */
     private FileSet sourceFiles;
 
     /**
+     * Directory where to put generated images.
      * @parameter expression="${plantuml.outputDirectory}" default-value="${basedir}/target/plantuml"
      * @required
      */
