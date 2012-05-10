@@ -68,6 +68,30 @@ Configure the plugin
 </project>
 ---
 
+* Output in same directory as source file
+
+  By setting the configuration option <<<outputInSourceDirectory>>> to true, 
+  the images will be generated in the same directory as the source file. This is useful for
+  using PlantUML diagrams in Javadoc, as described here: 
+  {{{http://plantuml.sourceforge.net/javadoc.html}http://plantuml.sourceforge.net/javadoc.html}}.
+  When this option is set to true, <<<outputDirectory>>> is ignored. Example configuration:
+  
+---
+<configuration>
+    <sourceFiles>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>
+              src/main/java/**/*.java
+          </include>
+        </includes>
+    </sourceFiles>
+    <outputInSourceDirectory>
+    	true
+    </outputInSourceDirectory>
+</configuration>
+---
+
 Run goal
 
   Then execute command:
