@@ -35,6 +35,7 @@ import org.apache.maven.model.FileSet;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
+ * @phase generate-resources
  * @goal generate
  */
 public class PlantUMLMojo extends AbstractMojo {
