@@ -114,8 +114,6 @@ public class PlantUMLMojo extends AbstractMojo {
             this.option.setFileFormat(FileFormat.ATXT);
         } else if ("utxt".equalsIgnoreCase(format)) {
             this.option.setFileFormat(FileFormat.UTXT);
-        } else if ("dot".equalsIgnoreCase(format)) {
-            this.option.setFileFormat(FileFormat.DOT);
         } else if ("png".equalsIgnoreCase(format)) {
             this.option.setFileFormat(FileFormat.PNG);
         } else if ("pdf".equalsIgnoreCase(format)) {

@@ -4,7 +4,7 @@
 
     <groupId>com.github.jeluard</groupId>
     <artifactId>maven-plantuml-plugin</artifactId>
-    <version>7233-SNAPSHOT</version>
+    <version>7933-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Maven PlantUML plugin</name>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
-            <version>7232</version>
+            <version>7933</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
