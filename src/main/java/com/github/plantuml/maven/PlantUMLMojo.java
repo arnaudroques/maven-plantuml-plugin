@@ -19,18 +19,15 @@
 package com.github.plantuml.maven;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sourceforge.plantuml.DirWatcher;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.GeneratedImage;
 import net.sourceforge.plantuml.Option;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SourceFileReader;
 import net.sourceforge.plantuml.preproc.Defines;
-
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -45,12 +42,6 @@ public class PlantUMLMojo extends AbstractMojo {
     private final Option option = new Option();
 
     /**
-     * @parameter expression="${plantuml.directory}"
-     * @deprecated Use sourceFiles parameter instead, which provides better capabilities of filtering.
-     */
-    private File directory;
-
-    /**
      * Fileset to search plantuml diagrams in.
      * @parameter expression="${plantuml.sourceFiles}"
      * @required
@@ -59,7 +50,7 @@ public class PlantUMLMojo extends AbstractMojo {
     private FileSet sourceFiles;
 
     /**
-     * Directory where to put generated images.
+     * Directory where generated images are generated.
      * @parameter expression="${plantuml.outputDirectory}" default-value="${basedir}/target/plantuml"
      * @required
      */
@@ -140,10 +131,6 @@ public class PlantUMLMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        if (this.directory != null && !this.directory.isDirectory()) {
-            getLog().warn("<"+this.directory+"> is not a valid directory.");
-            return;
-        }
         if (!outputInSourceDirectory) {
             if (!this.outputDirectory.exists()) {
                 // If output directoy does not exist yet create it.
@@ -177,43 +164,31 @@ public class PlantUMLMojo extends AbstractMojo {
                 OptionFlags.getInstance().setVerbose(true);
             }
 
-            File baseDir = null;
+            final File baseDir;
             try {
                 baseDir  = new File(this.sourceFiles.getDirectory());
+            } catch(Exception e) {
+               throw new MojoExecutionException(this.sourceFiles.getDirectory() + " is not a valid path", e);
             }
-            catch(Exception e) {
-               getLog().warn(this.sourceFiles.getDirectory() + " is not a valid path");
-            }
-            if(baseDir != null) {
-                final List<File> files = FileUtils.getFiles(
-                     baseDir,
-                     getCommaSeparatedList(this.sourceFiles.getIncludes()),
-                     getCommaSeparatedList(this.sourceFiles.getExcludes())
-                );
-                for(final File f : files) {
-                    getLog().info("Processing " + f);
-                    
-                    if (outputInSourceDirectory) {
-                        this.option.setOutputDir(f.getParentFile());
-                    }
-                    
-                    final SourceFileReader sourceFileReader =
-                        new SourceFileReader(
-                            new Defines(), f, this.option.getOutputDir(),
-                            this.option.getConfig(), this.option.getCharset(),
-                            this.option.getFileFormatOption());
-                    for (final GeneratedImage image :
-                             sourceFileReader.getGeneratedImages()) {
-                        getLog().debug(image + " " + image.getDescription());
-                    }
-                }
-            }
-            else {
-                getLog().info("Using <"+this.directory+"> as directory and <"+this.outputDirectory+"> as output directory.");
 
-                final DirWatcher dirWatcher = new DirWatcher(this.directory, this.option, Option.getPattern());
-                final Collection<GeneratedImage> result = dirWatcher.buildCreatedFiles();
-                for (final GeneratedImage image : result) {
+            final List<File> files = FileUtils.getFiles(
+                 baseDir,
+                 getCommaSeparatedList(this.sourceFiles.getIncludes()),
+                 getCommaSeparatedList(this.sourceFiles.getExcludes())
+            );
+            for(final File file : files) {
+                getLog().info("Processing file <"+file+">");
+
+                if (this.outputInSourceDirectory) {
+                    this.option.setOutputDir(file.getParentFile());
+                }
+
+                final SourceFileReader sourceFileReader =
+                    new SourceFileReader(
+                        new Defines(), file, this.option.getOutputDir(),
+                        this.option.getConfig(), this.option.getCharset(),
+                        this.option.getFileFormatOption());
+                for (final GeneratedImage image : sourceFileReader.getGeneratedImages()) {
                     getLog().debug(image + " " + image.getDescription());
                 }
             }
