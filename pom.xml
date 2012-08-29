@@ -90,7 +90,7 @@
                     <strictCheck>true</strictCheck>
                     <excludes>
                         <exclude>.gitignore</exclude>
-                        <exclude>README.textile</exclude>
+                        <exclude>README.md</exclude>
                         <exclude>LICENSE</exclude>
                         <exclude>NOTICE</exclude>
                         <exclude>licenses/*</exclude>
