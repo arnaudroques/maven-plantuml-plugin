@@ -51,15 +51,30 @@ public class PlantUMLMojo extends AbstractMojo {
     private File directory;
 
     /**
+     * Fileset to search plantuml diagrams in.
      * @parameter expression="${plantuml.sourceFiles}"
+     * @required
+     * @since 7232
      */
     private FileSet sourceFiles;
 
     /**
+     * Directory where to put generated images.
      * @parameter expression="${plantuml.outputDirectory}" default-value="${basedir}/target/plantuml"
      * @required
      */
     private File outputDirectory;
+    
+    /**
+     * Whether or not to generate images in same directory as the source file.
+     * This is useful for using PlantUML diagrams in Javadoc, 
+     * as described here: 
+     * <a href="http://plantuml.sourceforge.net/javadoc.html">http://plantuml.sourceforge.net/javadoc.html</a>.
+     * 
+     * If this is set to true then outputDirectory is ignored.
+     * @parameter expression="${plantuml.outputInSourceDirectory}" default-value="false"
+     */
+    private boolean outputInSourceDirectory;
 
     /**
      * Charset used during generation.
@@ -129,16 +144,20 @@ public class PlantUMLMojo extends AbstractMojo {
             getLog().warn("<"+this.directory+"> is not a valid directory.");
             return;
         }
-        if (!this.outputDirectory.exists()) {
-            //If output directoy does not exist yet create it.
-            this.outputDirectory.mkdirs();
+        if (!outputInSourceDirectory) {
+            if (!this.outputDirectory.exists()) {
+                // If output directoy does not exist yet create it.
+                this.outputDirectory.mkdirs();
+            }
+            if (!this.outputDirectory.isDirectory()) {
+                throw new IllegalArgumentException("<" + this.outputDirectory + "> is not a valid directory.");
+            }
         }
-        if (!this.outputDirectory.isDirectory()) {
-            throw new IllegalArgumentException("<"+this.outputDirectory+"> is not a valid directory.");
-        }
-
+        
         try {
-            this.option.setOutputDir(this.outputDirectory);
+        	if (!outputInSourceDirectory) {
+                this.option.setOutputDir(this.outputDirectory);
+            }
             if (this.charset != null) {
                 this.option.setCharset(this.charset);
             }
@@ -173,6 +192,11 @@ public class PlantUMLMojo extends AbstractMojo {
                 );
                 for(final File f : files) {
                     getLog().info("Processing " + f);
+                    
+                    if (outputInSourceDirectory) {
+                        this.option.setOutputDir(f.getParentFile());
+                    }
+                    
                     final SourceFileReader sourceFileReader =
                         new SourceFileReader(
                             new Defines(), f, this.option.getOutputDir(),
