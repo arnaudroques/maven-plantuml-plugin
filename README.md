@@ -1,4 +1,4 @@
-A maven plugin to generate UML diagrams using PlantUML syntax. !http://stillmaintained.com/jeluard/maven-plantuml-plugin.png!
+A maven plugin to generate UML diagrams using PlantUML syntax.
 
 # Usage
 
@@ -34,8 +34,11 @@ mvn clean com.github.jeluard:maven-plantuml-plugin:generate
 # Extra configuration options
 
 `outputDirectory` Directory where generated images are generated. Defaults to `${basedir}/target/plantuml`
+
 `outputInSourceDirectory` Whether or not to generate images in same directory as the source file. Defaults to `false`.
+
 `format` Output format. Defaults to `png`.
+
 `verbose` Wether or not to output details during generation. Defaults to `false`.
 
 
