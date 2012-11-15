@@ -1,170 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
+  <artifactId>maven-plantuml-plugin</artifactId>
+  <version>7940-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
+
+  <name>Maven PlantUML plugin</name>
+  <inceptionYear>2011</inceptionYear>
+  <description>
+    A maven plugin to generate UML diagrams using PlantUML syntax
+  </description>
+
+  <parent>
     <groupId>com.github.jeluard</groupId>
-    <artifactId>maven-plantuml-plugin</artifactId>
-    <version>7935-SNAPSHOT</version>
-    <packaging>maven-plugin</packaging>
+    <artifactId>oss-parent</artifactId>
+    <version>1</version>
+  </parent>
 
-    <name>Maven PlantUML plugin</name>
-    <inceptionYear>2011</inceptionYear>
-    <url>http://github.com/jeluard/maven-plantuml-plugin</url>
-    
-    <description>
-        A maven plugin to generate UML diagrams using PlantUML syntax
-    </description>
+  <dependencies>
+    <dependency>
+      <groupId>net.sourceforge.plantuml</groupId>
+      <artifactId>plantuml</artifactId>
+      <version>7940</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>3.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-model</artifactId>
+      <version>3.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>3.0.8</version>
+    </dependency>
+  </dependencies>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
+  <developers>
+    <developer>
+      <id>jeluard</id>
+      <name>Julien Eluard</name>
+    </developer>
+    <developer>
+      <id>vanuan</id>
+      <name>John Yani</name>
+    </developer>
+    <developer>
+      <id>matling</id>
+      <name>Mattias Lingdell</name>
+    </developer>
+  </developers>
 
-    <dependencies>
-        <dependency>
-            <groupId>net.sourceforge.plantuml</groupId>
-            <artifactId>plantuml</artifactId>
-            <version>7934</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-plugin-api</artifactId>
-            <version>2.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-model</artifactId>
-            <version>2.2.1</version>
-        </dependency>
-    </dependencies>
+  <scm>
+    <connection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</connection>
+    <developerConnection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</developerConnection>
+    <url>scm:git:git@github.com:jeluard/maven-plantuml-plugin</url>
+  </scm>
 
-    <licenses>
-        <license>
-            <name>Apache 2</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>jeluard</id>
-            <name>Julien Eluard</name>
-        </developer>
-        <developer>
-            <id>vanuan</id>
-            <name>John Yani</name>
-        </developer>
-        <developer>
-            <id>matling</id>
-            <name>Mattias Lingdell</name>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</connection>
-        <developerConnection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</developerConnection>
-        <url>scm:git:git@github.com:jeluard/maven-plantuml-plugin</url>
-    </scm>
-
-    <issueManagement>
-        <system>Github</system>
-        <url>http://github.com/jeluard/maven-plantuml-plugin/issues</url>
-    </issueManagement>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <version>1.8.0</version>
-                <configuration>
-                    <header>LICENSE</header>
-                    <failIfMissing>true</failIfMissing>
-                    <aggregate>true</aggregate>
-                    <strictCheck>true</strictCheck>
-                    <excludes>
-                        <exclude>.gitignore</exclude>
-                        <exclude>README.md</exclude>
-                        <exclude>LICENSE</exclude>
-                        <exclude>NOTICE</exclude>
-                        <exclude>licenses/*</exclude>
-                        <exclude>**/dependency-reduced-pom.xml</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>check-headers</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <mavenExecutorId>forked-path</mavenExecutorId>
-                    <preparationGoals>clean install</preparationGoals>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.1</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.2</version>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
     
 </project>
