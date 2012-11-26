@@ -22,7 +22,7 @@
     <dependency>
       <groupId>net.sourceforge.plantuml</groupId>
       <artifactId>plantuml</artifactId>
-      <version>7940</version>
+      <version>7941</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>

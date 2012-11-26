@@ -1,5 +1,9 @@
 A [maven](http://maven.apache.org/) plugin to generate UML diagrams using [PlantUML](http://plantuml.sourceforge.net/) syntax.
 
+```
+Starting version 7941 artifactId is now plantuml-maven-plugin to conform to maven best practises.
+```
+
 # Usage
 
 To generate images from PlantUML description add following dependency to your pom.xml:
@@ -10,14 +14,14 @@ To generate images from PlantUML description add following dependency to your po
   <plugins>
     <plugin>
       <groupId>com.github.jeluard</groupId>
-      <artifactId>maven-plantuml-plugin</artifactId>
-      <version>7940</version>
+      <artifactId>plantuml-maven-plugin</artifactId>
+      <version>7941</version>
       <configuration>
         <sourceFiles>
           <directory>${basedir}</directory>
-	  <includes>
-	    <include>src/main/plantuml/**/*.txt</include>
-	  </includes>
+          <includes>
+            <include>src/main/plantuml/**/*.txt</include>
+          </includes>
         </sourceFiles>
       </configuration>
     </plugin>
@@ -28,7 +32,7 @@ To generate images from PlantUML description add following dependency to your po
 Then execute command:
 
 ```
-mvn clean com.github.jeluard:maven-plantuml-plugin:generate
+mvn clean com.github.jeluard:plantuml-maven-plugin:generate
 ```
 
 # Extra configuration options
