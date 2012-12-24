@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>plantuml-maven-plugin</artifactId>
-  <version>7942-SNAPSHOT</version>
+  <version>7947-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Maven PlantUML plugin</name>
