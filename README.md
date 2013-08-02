@@ -24,10 +24,19 @@ To generate images from PlantUML description add following dependency to your po
           </includes>
         </sourceFiles>
       </configuration>
+      <dependencies>
+        <dependency>
+          <groupId>net.sourceforge.plantuml</groupId>
+          <artifactId>plantuml</artifactId>
+          <version>7976</version>
+        </dependency>
+      </dependencies>
     </plugin>
   </plugins>
 </build>
 ```
+
+Note that you must explicitely define the PlantUML version you want to use.
 
 Then execute command:
 
