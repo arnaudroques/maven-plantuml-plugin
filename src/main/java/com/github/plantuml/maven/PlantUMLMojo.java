@@ -180,6 +180,9 @@ public final class PlantUMLMojo extends AbstractMojo {
 
         if (this.outputInSourceDirectory) {
           this.option.setOutputDir(file.getParentFile());
+        } else {
+          this.option.setOutputDir(outputDirectory.toPath().resolve(
+              baseDir.toPath().relativize(file.toPath().getParent())).toFile());
         }
 
         final SourceFileReader sourceFileReader =
