@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>plantuml-maven-plugin</artifactId>
-  <version>7955-SNAPSHOT</version>
+  <version>1.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Maven PlantUML plugin</name>
@@ -15,14 +15,14 @@
   <parent>
     <groupId>com.github.jeluard</groupId>
     <artifactId>oss-parent</artifactId>
-    <version>3</version>
+    <version>9</version>
   </parent>
 
   <dependencies>
     <dependency>
       <groupId>net.sourceforge.plantuml</groupId>
       <artifactId>plantuml</artifactId>
-      <version>7954</version>
+      <version>7999</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
