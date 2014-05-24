@@ -130,6 +130,22 @@ public final class PlantUMLMojo extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException {
+    // early exit if sourceFiles directory is not available
+    final String invalidSourceFilesDirectoryWarnMsg = this.sourceFiles.getDirectory() + " is not a valid path";
+    if( null == this.sourceFiles.getDirectory() || this.sourceFiles.getDirectory().isEmpty()) {
+        getLog().warn(invalidSourceFilesDirectoryWarnMsg);
+        return;
+    }
+    File baseDir = null;
+    try {
+        baseDir = new File(this.sourceFiles.getDirectory());
+    } catch (Exception e) {
+        getLog().debug(invalidSourceFilesDirectoryWarnMsg, e);
+    }
+    if( null == baseDir || !baseDir.exists() || !baseDir.isDirectory()) {
+        getLog().warn(invalidSourceFilesDirectoryWarnMsg);
+        return;
+    }
     if (!this.outputInSourceDirectory) {
       if (!this.outputDirectory.exists()) {
         // If output directoy does not exist yet create it.
@@ -161,13 +177,6 @@ public final class PlantUMLMojo extends AbstractMojo {
       }
       if (this.verbose) {
         OptionFlags.getInstance().setVerbose(true);
-      }
-
-      final File baseDir;
-      try {
-        baseDir  = new File(this.sourceFiles.getDirectory());
-      } catch(Exception e) {
-        throw new MojoExecutionException(this.sourceFiles.getDirectory() + " is not a valid path", e);
       }
 
       final List<File> files = FileUtils.getFiles(
