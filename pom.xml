@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>plantuml-maven-plugin</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>Maven PlantUML plugin</name>
@@ -17,6 +17,10 @@
     <artifactId>oss-parent</artifactId>
     <version>9</version>
   </parent>
+
+  <properties>
+    <javaAnimalSniffer.version>17</javaAnimalSniffer.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -60,7 +64,7 @@
     <connection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</connection>
     <developerConnection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</developerConnection>
     <url>scm:git:git@github.com:jeluard/maven-plantuml-plugin</url>
-    <tag>HEAD</tag>
+    <tag>1.1</tag>
   </scm>
 
   <build>
