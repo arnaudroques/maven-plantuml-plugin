@@ -26,7 +26,7 @@
     <dependency>
       <groupId>net.sourceforge.plantuml</groupId>
       <artifactId>plantuml</artifactId>
-      <version>7999</version>
+      <version>8033</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -58,12 +58,16 @@
       <id>matling</id>
       <name>Mattias Lingdell</name>
     </developer>
+    <developer>
+      <id>rollinhand</id>
+      <name>Björn Berg</name>
+    </developer>
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</connection>
-    <developerConnection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</developerConnection>
-    <url>scm:git:git@github.com:jeluard/maven-plantuml-plugin</url>
+    <connection>scm:git:git@github.com:rollinhand/maven-plantuml-plugin</connection>
+    <developerConnection>scm:git:git@github.com:rollinhand/maven-plantuml-plugin</developerConnection>
+    <url>scm:git:git@github.com:rollinhand/maven-plantuml-plugin</url>
     <tag>HEAD</tag>
   </scm>
 
