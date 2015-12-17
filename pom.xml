@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>plantuml-maven-plugin</artifactId>
-  <version>1.2</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Maven PlantUML plugin</name>
@@ -65,10 +65,10 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:rollinhand/maven-plantuml-plugin</connection>
-    <developerConnection>scm:git:git@github.com:rollinhand/maven-plantuml-plugin</developerConnection>
-    <url>scm:git:git@github.com:rollinhand/maven-plantuml-plugin</url>
-    <tag>plantuml-maven-plugin-1.2</tag>
+    <connection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</connection>
+    <developerConnection>scm:git:git@github.com:jeluard/maven-plantuml-plugin</developerConnection>
+    <url>scm:git:git@github.com:jeluard/maven-plantuml-plugin</url>
+    <tag>HEAD</tag>
   </scm>
 
   <build>
