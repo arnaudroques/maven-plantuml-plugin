@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.GeneratedImage;
 import net.sourceforge.plantuml.Option;
 import net.sourceforge.plantuml.OptionFlags;
@@ -101,6 +102,13 @@ public final class PlantUMLMojo extends AbstractMojo {
    * @parameter property="plantuml.verbose" default-value="false"
    */
   private boolean verbose;
+  
+  /**
+   * Specify if metadata should be written to the output file.
+   * @parameter property="plantuml.withMetadata"
+   * @since 1.2
+   */
+  private boolean withMetadata = true;
 
   protected final void setFormat(final String format) {
     if ("xmi".equalsIgnoreCase(format)) {
@@ -193,12 +201,14 @@ public final class PlantUMLMojo extends AbstractMojo {
           this.option.setOutputDir(outputDirectory.toPath().resolve(
               baseDir.toPath().relativize(file.toPath().getParent())).toFile());
         }
+        
+        
 
         final SourceFileReader sourceFileReader =
           new SourceFileReader(
             new Defines(), file, this.option.getOutputDir(),
             this.option.getConfig(), this.option.getCharset(),
-            this.option.getFileFormatOption());
+            getFileFormatOption());
         for (final GeneratedImage image : sourceFileReader.getGeneratedImages()) {
           getLog().debug(image + " " + image.getDescription());
         }
@@ -221,4 +231,12 @@ public final class PlantUMLMojo extends AbstractMojo {
     return builder.toString();
   }
 
+  private FileFormatOption getFileFormatOption() {
+    FileFormatOption formatOptions = new FileFormatOption(this.option.getFileFormat(), this.withMetadata);
+    if (formatOptions.isWithMetadata() != withMetadata){
+      // Workarround to error in plantUML where the withMetadata flag is not correctly applied.
+      return new FileFormatOption(this.option.getFileFormat());
+    }
+    return formatOptions;
+  }
 }
