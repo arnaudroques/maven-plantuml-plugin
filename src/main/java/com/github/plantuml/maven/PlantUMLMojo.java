@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.GeneratedImage;
 import net.sourceforge.plantuml.Option;
 import net.sourceforge.plantuml.OptionFlags;
@@ -101,6 +102,20 @@ public final class PlantUMLMojo extends AbstractMojo {
    * @parameter property="plantuml.verbose" default-value="false"
    */
   private boolean verbose;
+  
+  /**
+   * Specify to include metadata in the output files.
+   * @parameter property="plantuml.withMetadata"
+   * @since 1.3
+   */
+  private boolean withMetadata = false;
+  
+  /**
+   * Specify to overwrite any output file, also if the target file is newer as the input file.
+   * @parameter property="plantuml.overwrite"
+   * @since 1.3
+   */
+  private boolean overwrite = false;
 
   protected final void setFormat(final String format) {
     if ("xmi".equalsIgnoreCase(format)) {
@@ -184,21 +199,32 @@ public final class PlantUMLMojo extends AbstractMojo {
         getCommaSeparatedList(this.sourceFiles.getIncludes()),
         getCommaSeparatedList(this.sourceFiles.getExcludes())
       );
-      for(final File file : files) {
-        getLog().info("Processing file <"+file+">");
-
+      for(final File file : files) {        
+        File outDir;
         if (this.outputInSourceDirectory) {
-          this.option.setOutputDir(file.getParentFile());
+          outDir = file.getParentFile();
         } else {
-          this.option.setOutputDir(outputDirectory.toPath().resolve(
-              baseDir.toPath().relativize(file.toPath().getParent())).toFile());
+          outDir = outputDirectory.toPath().resolve(
+              baseDir.toPath().relativize(file.toPath().getParent())).toFile();
+        }
+        this.option.setOutputDir(outDir);
+        
+        FileFormatOption fileFormatOption = getFileFormatOption();
+        if (!overwrite){
+          String newName = fileFormatOption.getFileFormat().changeName(file.getName(), 0);
+          File targetFile = new File(outDir, newName);
+          if (targetFile.exists() && targetFile.lastModified() > file.lastModified()){
+            getLog().debug("Skip file <"+file+"> because target <"+targetFile+"> is newer");
+            continue;
+          }
         }
 
+        getLog().info("Processing file <"+file+">");
         final SourceFileReader sourceFileReader =
           new SourceFileReader(
             new Defines(), file, this.option.getOutputDir(),
             this.option.getConfig(), this.option.getCharset(),
-            this.option.getFileFormatOption());
+            fileFormatOption);
         for (final GeneratedImage image : sourceFileReader.getGeneratedImages()) {
           getLog().debug(image + " " + image.getDescription());
         }
@@ -221,4 +247,12 @@ public final class PlantUMLMojo extends AbstractMojo {
     return builder.toString();
   }
 
+  private FileFormatOption getFileFormatOption() {
+    FileFormatOption formatOptions = new FileFormatOption(this.option.getFileFormat(), this.withMetadata);
+    if (formatOptions.isWithMetadata() != withMetadata){
+      // Workarround to error in plantUML where the withMetadata flag is not correctly applied.
+      return new FileFormatOption(this.option.getFileFormat());
+    }
+    return formatOptions;
+  }
 }
