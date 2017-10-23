@@ -50,6 +50,8 @@ mvn clean com.github.jeluard:plantuml-maven-plugin:generate
 
 `outputDirectory` Directory where generated images are generated. Defaults to `${basedir}/target/plantuml`
 
+`flattenOutput` Place all images directly in the output directory rather than preserving the source structure.
+
 `outputInSourceDirectory` Whether or not to generate images in same directory as the source file. Defaults to `false`.
 
 `format` Output format. Defaults to `png`.

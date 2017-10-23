@@ -65,7 +65,7 @@ public final class PlantUMLMojo extends AbstractMojo {
    * If this is set to true then outputDirectory is ignored.
    * @parameter property="plantuml.outputInSourceDirectory" default-value="false"
    */
-  private boolean outputInSourceDirectory;
+  private boolean outputInSourceDirectory = false;
 
   /**
    * Charset used during generation.
@@ -80,7 +80,7 @@ public final class PlantUMLMojo extends AbstractMojo {
   private String config;
 
   /**
-   * Wether or not to keep tmp files after generation.
+   * Whether or not to keep tmp files after generation.
    * @parameter property="plantuml.keepTmpFiles" default-value="false"
    */
   private boolean keepTmpFiles;
@@ -98,7 +98,7 @@ public final class PlantUMLMojo extends AbstractMojo {
   private String graphvizDot;
 
   /**
-   * Wether or not to output details during generation.
+   * Whether or not to output details during generation.
    * @parameter property="plantuml.verbose" default-value="false"
    */
   private boolean verbose;
@@ -116,6 +116,13 @@ public final class PlantUMLMojo extends AbstractMojo {
    * @since 1.3
    */
   private boolean overwrite = false;
+
+  /**
+   * Specify to write all output in output directory without preserving the source dir structure.
+   * @parameter property="plantuml.flattenOutput"
+   * @since 1.3
+   */
+  private boolean flattenOutput;
 
   protected final void setFormat(final String format) {
     if ("xmi".equalsIgnoreCase(format)) {
@@ -163,7 +170,7 @@ public final class PlantUMLMojo extends AbstractMojo {
     }
     if (!this.outputInSourceDirectory) {
       if (!this.outputDirectory.exists()) {
-        // If output directoy does not exist yet create it.
+        // If output directory does not exist yet create it.
         this.outputDirectory.mkdirs();
       }
       if (!this.outputDirectory.isDirectory()) {
@@ -203,10 +210,14 @@ public final class PlantUMLMojo extends AbstractMojo {
         File outDir;
         if (this.outputInSourceDirectory) {
           outDir = file.getParentFile();
+        } else if (this.flattenOutput) {
+          getLog().debug("Flatten all files into output dir");
+          outDir = outputDirectory.toPath().toFile();
         } else {
           outDir = outputDirectory.toPath().resolve(
               baseDir.toPath().relativize(file.toPath().getParent())).toFile();
         }
+        getLog().info("Output dir set to <"+outDir+">");
         this.option.setOutputDir(outDir);
         
         FileFormatOption fileFormatOption = getFileFormatOption();
@@ -236,7 +247,7 @@ public final class PlantUMLMojo extends AbstractMojo {
 
   protected String getCommaSeparatedList(final List<String> list) {
     final StringBuilder builder = new StringBuilder();
-    final Iterator it = list.iterator();
+    final Iterator<?> it = list.iterator();
     while(it.hasNext()) {
       final Object object = it.next();
       builder.append(object.toString());
@@ -250,7 +261,7 @@ public final class PlantUMLMojo extends AbstractMojo {
   private FileFormatOption getFileFormatOption() {
     FileFormatOption formatOptions = new FileFormatOption(this.option.getFileFormat(), this.withMetadata);
     if (formatOptions.isWithMetadata() != withMetadata){
-      // Workarround to error in plantUML where the withMetadata flag is not correctly applied.
+      // Workaround to error in plantUML where the withMetadata flag is not correctly applied.
       return new FileFormatOption(this.option.getFileFormat());
     }
     return formatOptions;
