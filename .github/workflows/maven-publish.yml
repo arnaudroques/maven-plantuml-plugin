@@ -4,6 +4,8 @@
 name: Maven PlantUML Plugin
 
 on:
+  push:
+  workflow_dispatch:
   release:
     types: [created]
 
